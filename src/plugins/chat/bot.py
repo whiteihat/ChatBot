@@ -1,8 +1,13 @@
 import asyncio
 from typing import List, Dict, Any, Optional
 import random
+from nonebot import on_message
+from nonebot.adapters.onebot.v11 import Bot
+from nonebot.rule import to_me
+from nonebot.plugin import PluginMetadata
 from nonebot.log import logger
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message, MessageSegment
+from nonebot.typing import T_State
 from .lifecycle import ResourceManager
 from .ai_client import get_ai_client
 from .message_handler import MessageProcessor
@@ -157,8 +162,8 @@ async def initialize_bot():
     ResourceManager.set("chat_bot", _bot_instance)
 
 
-# 注册机器人
-ResourceManager.register(
+# 注册机器人 - 改为使用注册清单
+ResourceManager.add_to_registry(
     name="chat_bot",
     dependencies=["config", "context_manager", "ai_client", "group_manager"],
     initializer=initialize_bot,
@@ -230,3 +235,19 @@ async def handle_group_message(event: GroupMessageEvent):
 
     except Exception as e:
         logger.exception(f"处理群组消息出错: {str(e)}")
+
+
+# 插件元数据
+__plugin_meta__ = PluginMetadata(
+    name="智能聊天", description="基于大模型的聊天机器人", usage="自动响应群聊消息"
+)
+
+# 注册消息处理器
+group_msg_handler = on_message(priority=5)
+
+
+@group_msg_handler.handle()
+async def group_message_handler(bot: Bot, event: GroupMessageEvent, state: T_State):
+    """注册到nonebot的群组消息处理函数"""
+    if isinstance(event, GroupMessageEvent):
+        await handle_group_message(event)

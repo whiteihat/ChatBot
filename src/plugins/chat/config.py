@@ -149,8 +149,8 @@ async def initialize_config():
     ResourceManager.set("config", config)
 
 
-# 注册配置资源
-ResourceManager.register(name="config", initializer=initialize_config)
+# 注册配置资源 - 改为使用注册清单
+ResourceManager.add_to_registry(name="config", initializer=initialize_config)
 
 
 async def get_config() -> Config:

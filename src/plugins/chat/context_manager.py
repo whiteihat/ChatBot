@@ -94,8 +94,8 @@ async def periodic_cleanup(context_manager: ContextManager):
         await context_manager.clear_expired_contexts()
 
 
-# 注册上下文管理器
-ResourceManager.register(
+# 注册上下文管理器 - 改为使用注册清单
+ResourceManager.add_to_registry(
     name="context_manager",
     dependencies=["config"],
     initializer=initialize_context_manager,
