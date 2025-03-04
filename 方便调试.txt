@@ -1,0 +1,8 @@
+# 想通过控制台进行功能测试
+nb run --reload-exclude nonebot.plugins.echo
+
+# 热重载配置：
+nb run --reload --reload-include src/plugins
+
+# 专用测试命令：
+python -m nonebot run --plugin console_test --adapter console

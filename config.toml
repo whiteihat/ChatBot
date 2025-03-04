@@ -1,0 +1,18 @@
+[bot]
+# 机器人信息配置
+name = "MyChatBot"
+qq = "1234567890"
+
+[message]
+# 消息处理配置
+min_text_length = 2
+max_text_length = 500
+max_context_size = 15
+allowed_types = ["text", "image"]
+random_reply_rate = 0.1           # 随机回复概率
+trigger_keywords = ["聊聊", "问一下"]  # 触发回复的关键词
+
+[response]
+# 回复配置
+api_using = "siliconflow"
+model_probabilities = { r1 = 0.5, v3 = 0.3, r1_distill = 0.2 }
